@@ -2,17 +2,1410 @@
   "meta": {
     "title": "业务流程与依赖知识图谱",
     "version": "1.0",
-    "generatedAt": "2026-08-14"
+    "generatedAt": "2026-08-16"
   },
-  "domains": [],
-  "nodes": [],
-  "edges": [],
+  "domains": [
+    {
+      "id": "git",
+      "name": "git",
+      "color": "#6366f1"
+    },
+    {
+      "id": "api",
+      "name": "api",
+      "color": "#10b981"
+    },
+    {
+      "id": "architecture",
+      "name": "architecture",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "engineering",
+      "name": "engineering",
+      "color": "#ef4444"
+    },
+    {
+      "id": "backend",
+      "name": "backend",
+      "color": "#0ea5e9"
+    },
+    {
+      "id": "frontend",
+      "name": "frontend",
+      "color": "#a855f7"
+    },
+    {
+      "id": "data",
+      "name": "data",
+      "color": "#14b8a6"
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案",
+      "name": "page_prd_知识管理系统_v2_0_技术方案",
+      "color": "#ec4899"
+    },
+    {
+      "id": "infra",
+      "name": "infra",
+      "color": "#84cc16"
+    },
+    {
+      "id": "sync",
+      "name": "sync",
+      "color": "#f97316"
+    },
+    {
+      "id": "embedding",
+      "name": "embedding",
+      "color": "#6366f1"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "sc_git_status_commit",
+      "domain": "git",
+      "title": "Git 工作区提交",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "scenario",
+      "summary": "查看工作区状态，提交变更并记录提交历史",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "api_git_status",
+      "domain": "git",
+      "title": "查看工作区状态",
+      "method": "GET",
+      "path": "/api/git/status",
+      "api": "/api/git/status",
+      "role": "endpoint",
+      "summary": "查询 Git 工作区当前变更状态",
+      "produces": [
+        "envelope_contract"
+      ],
+      "consumes": [
+        "project_param"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "api_git_commit",
+      "domain": "git",
+      "title": "提交变更",
+      "method": "POST",
+      "path": "/api/git/commit",
+      "api": "/api/git/commit",
+      "role": "endpoint",
+      "summary": "将变更提交并生成 commit hash",
+      "produces": [
+        "envelope_contract"
+      ],
+      "consumes": [
+        "project_param"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "api_git_log",
+      "domain": "git",
+      "title": "查询提交历史",
+      "method": "GET",
+      "path": "/api/git/log",
+      "api": "/api/git/log",
+      "role": "endpoint",
+      "summary": "查询提交历史记录，分页参数 pageSize 默认 20",
+      "produces": [
+        "envelope_contract"
+      ],
+      "consumes": [
+        "project_param",
+        "pagination_contract"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "project_param",
+      "domain": "git",
+      "title": "project 参数",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "parameter",
+      "summary": "多项目隔离参数",
+      "produces": [],
+      "consumes": [],
+      "notes": "透传 project 参数实现多项目隔离"
+    },
+    {
+      "id": "envelope_contract",
+      "domain": "git",
+      "title": "信封装约",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "contract",
+      "summary": "统一返回格式 {success,data:{items,total}}",
+      "produces": [],
+      "consumes": [],
+      "notes": "全部接口返回统一信封"
+    },
+    {
+      "id": "pagination_contract",
+      "domain": "git",
+      "title": "分页参数 pageSize",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "contract",
+      "summary": "分页参数 pageSize，默认 20，不认 limit",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "api_git_pull",
+      "domain": "git",
+      "title": "拉取远程更新接口",
+      "method": null,
+      "path": null,
+      "api": "/api/git/pull",
+      "role": "interface",
+      "summary": "执行 git pull --rebase，透传 project 参数拉取远程更新",
+      "produces": [
+        "application/json",
+        "{success,data} 信封"
+      ],
+      "consumes": [
+        "project 参数"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "api_git_conflicts",
+      "domain": "git",
+      "title": "冲突检测接口",
+      "method": null,
+      "path": null,
+      "api": "/api/git/conflicts",
+      "role": "interface",
+      "summary": "检测 pull --rebase 后是否存在合并冲突",
+      "produces": [
+        "application/json",
+        "{success,data} 信封"
+      ],
+      "consumes": [
+        "project 参数"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "api_git_push",
+      "domain": "git",
+      "title": "推送本地提交接口",
+      "method": null,
+      "path": null,
+      "api": "/api/git/push",
+      "role": "interface",
+      "summary": "无冲突时将本地提交推送到远程仓库",
+      "produces": [
+        "application/json",
+        "{success,data} 信封"
+      ],
+      "consumes": [
+        "project 参数"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "git_adapter",
+      "domain": "git",
+      "title": "Git 适配器",
+      "method": null,
+      "path": null,
+      "api": "git_adapter.py",
+      "role": "dependency",
+      "summary": "底层 Git 操作适配模块，被 /api/git/* 接口依赖",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "script_check_skill",
+      "domain": "git",
+      "title": "脚本检查技能契约",
+      "method": null,
+      "path": null,
+      "api": "script-check-skill",
+      "role": "contract",
+      "summary": "script-check-skill 契约，约束接口行为与校验规则",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "api_git_pull",
+      "domain": "api",
+      "title": "Git 拉取/合并",
+      "method": null,
+      "path": "/api/git/pull",
+      "api": "/api/git/pull",
+      "role": "endpoint",
+      "summary": "执行 pull 或合并操作，可能产生冲突",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "api_git_conflicts",
+      "domain": "api",
+      "title": "冲突文件列表",
+      "method": null,
+      "path": "/api/git/conflicts",
+      "api": "/api/git/conflicts",
+      "role": "endpoint",
+      "summary": "列出当前冲突文件",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "api_git_diff",
+      "domain": "api",
+      "title": "单文件差异",
+      "method": null,
+      "path": "/api/git/diff",
+      "api": "/api/git/diff",
+      "role": "endpoint",
+      "summary": "查看单个冲突文件的 diff",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "api_git_commit",
+      "domain": "api",
+      "title": "提交",
+      "method": null,
+      "path": "/api/git/commit",
+      "api": "/api/git/commit",
+      "role": "endpoint",
+      "summary": "冲突解决后提交变更",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "git_collaboration_layer",
+      "domain": "architecture",
+      "title": "Git 协同层",
+      "method": null,
+      "path": null,
+      "api": "按 docs/API-INTERFACE-DOC.md 定义",
+      "role": "V2.0 新增架构层",
+      "summary": "为 KS 补齐 git pull/status/push/commit/log/conflicts/branch/clone/init 等真实 Git 能力，解决 KS 完全无 Git 能力的缺口。",
+      "produces": [
+        "git_operations",
+        "conflict_resolution",
+        "branch_management"
+      ],
+      "consumes": [],
+      "notes": "Dream Cycle 将复用该层替代原 gbrain CLI。"
+    },
+    {
+      "id": "retrieval_augmentation_layer",
+      "domain": "architecture",
+      "title": "检索增强层",
+      "method": null,
+      "path": null,
+      "api": "按 docs/API-INTERFACE-DOC.md 定义",
+      "role": "V2.0 新增架构层",
+      "summary": "在 V1.x keyword 检索基础上补充 semantic 检索、embedding、rerank 与向量库能力。",
+      "produces": [
+        "semantic_search",
+        "reranked_results"
+      ],
+      "consumes": [
+        "embeddings"
+      ],
+      "notes": "解决 V1.x semantic 模式仅有占位的问题。"
+    },
+    {
+      "id": "dream_cycle",
+      "domain": "architecture",
+      "title": "Dream Cycle",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "复用 Git 能力的核心流程",
+      "summary": "知识沉淀自动化循环，V2.0 通过复用 Git 协同层完成同步、提交与入库。",
+      "produces": [
+        "knowledge_sync",
+        "automated_commit"
+      ],
+      "consumes": [
+        "git_operations"
+      ],
+      "notes": "原 gbrain 不是真实 CLI，V2.0 改为调用 Git 协同层。"
+    },
+    {
+      "id": "dream_cycle_cron",
+      "domain": "engineering",
+      "title": "Dream Cycle 定时脚本",
+      "method": null,
+      "path": "scripts/dream-cycle-cron.sh",
+      "api": "",
+      "role": "调度入口",
+      "summary": "定时触发 Dream Cycle 的执行脚本，现有步骤包含 gbrain sync 与 gbrain embed。",
+      "produces": [
+        "sync_job",
+        "embed_job"
+      ],
+      "consumes": [],
+      "notes": "V2.0 需将其中的 gbrain 调用替换为 Git 协同层与检索增强层能力。"
+    },
+    {
+      "id": "gbrain_sync",
+      "domain": "engineering",
+      "title": "gbrain sync",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "Dream Cycle 执行步骤",
+      "summary": "原 gbrain sync 步骤因 gbrain 不是真实 CLI 会失败，V2.0 改由 Git 协同层实现。",
+      "produces": [
+        "sync_result"
+      ],
+      "consumes": [
+        "git_pull",
+        "git_status",
+        "git_push"
+      ],
+      "notes": "需要真实的 git pull 与提交推送能力。"
+    },
+    {
+      "id": "gbrain_embed",
+      "domain": "engineering",
+      "title": "gbrain embed",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "Dream Cycle 执行步骤",
+      "summary": "原 gbrain embed 步骤，V2.0 接入检索增强层生成并写入 embedding。",
+      "produces": [
+        "embeddings"
+      ],
+      "consumes": [
+        "vector_store"
+      ],
+      "notes": "依赖检索增强层的语义/向量能力。"
+    },
+    {
+      "id": "ks_backend",
+      "domain": "backend",
+      "title": "KS 后端",
+      "method": null,
+      "path": null,
+      "api": "/api/*",
+      "role": "V1.x 基线 / V2.0 接入方",
+      "summary": "知识管理系统后端服务，V2.0 接入 Git 协同层与检索增强层。",
+      "produces": [
+        "rest_api"
+      ],
+      "consumes": [
+        "git_operations",
+        "search_results"
+      ],
+      "notes": "包含 server.js 代理、/api/generate-cases 等既有接口。"
+    },
+    {
+      "id": "ks_frontend",
+      "domain": "frontend",
+      "title": "KS 前端",
+      "method": null,
+      "path": "web/src",
+      "api": "",
+      "role": "V1.x 基线",
+      "summary": "知识管理系统前端，调用 KS 后端 REST 接口并维护 api-docs-data.js。",
+      "produces": [
+        "ui_interaction"
+      ],
+      "consumes": [
+        "rest_api"
+      ],
+      "notes": "web/src/api-docs-data.js 与 docs/API-INTERFACE-DOC.md 共同作为单一数据源。"
+    },
+    {
+      "id": "api_interface_doc",
+      "domain": "engineering",
+      "title": "API 接口文档",
+      "method": null,
+      "path": "docs/API-INTERFACE-DOC.md",
+      "api": "",
+      "role": "单一数据源",
+      "summary": "定义 V2.0 接口契约，与 web/src/api-docs-data.js 共同作为唯一来源。",
+      "produces": [
+        "api_contract"
+      ],
+      "consumes": [],
+      "notes": "所有改动须与此文档保持一致。"
+    },
+    {
+      "id": "script_check_skill",
+      "domain": "engineering",
+      "title": "script-check-skill",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "校验工具",
+      "summary": "校验脚本文件与 V2.0 技术方案及 API 接口文档的一致性。",
+      "produces": [
+        "consistency_report"
+      ],
+      "consumes": [
+        "api_contract",
+        "tech_spec"
+      ],
+      "notes": "所有改动须通过该技能校验。"
+    },
+    {
+      "id": "search_cache",
+      "domain": "data",
+      "title": "检索缓存",
+      "method": null,
+      "path": "cache/search_cache.py",
+      "api": "",
+      "role": "V1.x 基线",
+      "summary": "keyword 模式已实现，semantic 模式仅有占位。",
+      "produces": [
+        "keyword_search_result"
+      ],
+      "consumes": [
+        "query"
+      ],
+      "notes": "V2.0 由检索增强层增强语义检索。"
+    },
+    {
+      "id": "quality_gate",
+      "domain": "backend",
+      "title": "质量门控",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "V1.x 基线",
+      "summary": "总分 ≥ 60 入库，短响应/低可信度拒收。",
+      "produces": [
+        "quality_score"
+      ],
+      "consumes": [
+        "generated_cases"
+      ],
+      "notes": "V2.0 继续沿用。"
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "知识管理系统-V2.0-技术方案",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_0_现状基线_v1_x_已实现",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "0. 现状基线（V1.x 已实现）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_1_总体架构_v2_0",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "1. 总体架构（V2.0）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "2. Git 协同层（V2.0 核心新增）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_2_1_设计动机",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "2.1 设计动机",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_2_2_模块拆分_后端",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "2.2 模块拆分（后端）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_2_3_新增接口_api_server_js_docs_api_interface_doc_md",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "2.3 新增接口（`api/server.js` + `docs/API-INTERFACE-DOC.md`）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_2_4_gitignore_反转_关键",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "2.4 `.gitignore` 反转（关键）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_2_5_前端集成_v2_0_新增页面",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "2.5 前端集成（V2.0 新增页面）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_3_dream_cycle_复用_git_能力_失败不中断",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "3. Dream Cycle 复用 Git 能力（失败不中断）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_3_1_改造_scripts_dream_cycle_cron_sh",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "3.1 改造 `scripts/dream-cycle-cron.sh`",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_3_2_gbrain_cli_v2_0_新增",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "3.2 GBrain CLI（V2.0 新增）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "4. 检索增强（RAG）层",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_4_1_设计动机",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "4.1 设计动机",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_4_2_模块拆分",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "4.2 模块拆分",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_4_3_接口扩展",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "4.3 接口扩展",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_4_4_内网友商环境适配",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "4.4 内网友商环境适配",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_4_5_本地_bge_模型自带方案_方案_a_含安装包分发",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "4.5 本地 BGE 模型自带方案（方案 A，含安装包分发）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_5_内网部署与模型切换_基础设施层",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "5. 内网部署与模型切换（基础设施层）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_5_1_现状",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "5.1 现状",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_5_2_v2_0_增强",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "5.2 V2.0 增强",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "step",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_6_回测分流_与_tcgf_协同",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "6. 回测分流（与 TCGF 协同）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_7_v2_0_实施里程碑_建议顺序",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "7. V2.0 实施里程碑（建议顺序）",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "page_prd_知识管理系统_v2_0_技术方案_8_风险与约束",
+      "domain": "page_prd_知识管理系统_v2_0_技术方案",
+      "title": "8. 风险与约束",
+      "method": null,
+      "path": "",
+      "api": "",
+      "role": "module",
+      "summary": "",
+      "produces": [],
+      "consumes": [],
+      "notes": ""
+    },
+    {
+      "id": "node_dream_cycle_cron",
+      "domain": "infra",
+      "title": "Dream Cycle Cron脚本",
+      "method": null,
+      "path": "scripts/dream-cycle-cron.sh",
+      "api": "",
+      "role": "scheduler",
+      "summary": "定时触发知识管理系统的同步、嵌入与清理流程",
+      "produces": [],
+      "consumes": [],
+      "notes": "V2.0需要新增git pull步骤，现有gbrain sync和embed步骤"
+    },
+    {
+      "id": "node_git_pull",
+      "domain": "sync",
+      "title": "Git Pull",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "sync-step",
+      "summary": "从远端拉取最新知识库变更",
+      "produces": [],
+      "consumes": [],
+      "notes": "V1.x完全无Git能力，V2.0新增；失败时仅告警，不阻断后续步骤"
+    },
+    {
+      "id": "node_failure_alert",
+      "domain": "infra",
+      "title": "Git失败告警",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "monitoring",
+      "summary": "git pull失败时输出告警",
+      "produces": [],
+      "consumes": [],
+      "notes": "失败跳过式处理，不因Git在线状态中断整体流程"
+    },
+    {
+      "id": "node_embed",
+      "domain": "embedding",
+      "title": "Embed",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "embedding-step",
+      "summary": "执行embedding步骤",
+      "produces": [],
+      "consumes": [],
+      "notes": "semantic模式在V1.x仅有占位"
+    },
+    {
+      "id": "node_cleanup",
+      "domain": "infra",
+      "title": "清理步骤",
+      "method": null,
+      "path": null,
+      "api": "",
+      "role": "maintenance",
+      "summary": "执行后续清理操作",
+      "produces": [],
+      "consumes": [],
+      "notes": "git pull失败后仍需继续执行"
+    }
+  ],
+  "edges": [
+    {
+      "from": "sc_git_status_commit",
+      "to": "api_git_status",
+      "type": "sequence",
+      "label": "查看工作区状态"
+    },
+    {
+      "from": "sc_git_status_commit",
+      "to": "api_git_commit",
+      "type": "sequence",
+      "label": "提交变更"
+    },
+    {
+      "from": "sc_git_status_commit",
+      "to": "api_git_log",
+      "type": "sequence",
+      "label": "查询提交历史"
+    },
+    {
+      "from": "project_param",
+      "to": "api_git_status",
+      "type": "data",
+      "label": "透传 project 参数"
+    },
+    {
+      "from": "project_param",
+      "to": "api_git_commit",
+      "type": "data",
+      "label": "透传 project 参数"
+    },
+    {
+      "from": "project_param",
+      "to": "api_git_log",
+      "type": "data",
+      "label": "透传 project 参数"
+    },
+    {
+      "from": "pagination_contract",
+      "to": "api_git_log",
+      "type": "data",
+      "label": "分页参数"
+    },
+    {
+      "from": "api_git_status",
+      "to": "envelope_contract",
+      "type": "depends",
+      "label": "返回信封装约"
+    },
+    {
+      "from": "api_git_commit",
+      "to": "envelope_contract",
+      "type": "depends",
+      "label": "返回信封装约"
+    },
+    {
+      "from": "api_git_log",
+      "to": "envelope_contract",
+      "type": "depends",
+      "label": "返回信封装约"
+    },
+    {
+      "from": "api_git_pull",
+      "to": "api_git_conflicts",
+      "type": "sequence",
+      "label": "拉取后检测冲突"
+    },
+    {
+      "from": "api_git_conflicts",
+      "to": "api_git_push",
+      "type": "sequence",
+      "label": "无冲突则推送"
+    },
+    {
+      "from": "api_git_pull",
+      "to": "git_adapter",
+      "type": "depends",
+      "label": "依赖 Git 适配器"
+    },
+    {
+      "from": "api_git_push",
+      "to": "git_adapter",
+      "type": "depends",
+      "label": "依赖 Git 适配器"
+    },
+    {
+      "from": "api_git_conflicts",
+      "to": "git_adapter",
+      "type": "depends",
+      "label": "依赖 Git 适配器"
+    },
+    {
+      "from": "git_adapter",
+      "to": "script_check_skill",
+      "type": "depends",
+      "label": "依赖脚本检查契约"
+    },
+    {
+      "from": "api_git_conflicts",
+      "to": "api_git_diff",
+      "type": "sequence",
+      "label": "选择文件查看差异"
+    },
+    {
+      "from": "api_git_diff",
+      "to": "api_git_commit",
+      "type": "sequence",
+      "label": "确定保留版本后提交"
+    },
+    {
+      "from": "dream_cycle",
+      "to": "git_collaboration_layer",
+      "type": "depends",
+      "label": "复用 Git 能力"
+    },
+    {
+      "from": "dream_cycle",
+      "to": "dream_cycle_cron",
+      "type": "sequence",
+      "label": "由定时脚本触发"
+    },
+    {
+      "from": "dream_cycle_cron",
+      "to": "gbrain_sync",
+      "type": "sequence",
+      "label": "执行同步步骤"
+    },
+    {
+      "from": "dream_cycle_cron",
+      "to": "gbrain_embed",
+      "type": "sequence",
+      "label": "执行嵌入步骤"
+    },
+    {
+      "from": "gbrain_sync",
+      "to": "git_collaboration_layer",
+      "type": "depends",
+      "label": "依赖真实 Git 操作"
+    },
+    {
+      "from": "gbrain_embed",
+      "to": "retrieval_augmentation_layer",
+      "type": "depends",
+      "label": "依赖语义/向量能力"
+    },
+    {
+      "from": "retrieval_augmentation_layer",
+      "to": "search_cache",
+      "type": "depends",
+      "label": "增强检索缓存"
+    },
+    {
+      "from": "ks_backend",
+      "to": "git_collaboration_layer",
+      "type": "depends",
+      "label": "后端接入 Git 协同"
+    },
+    {
+      "from": "ks_backend",
+      "to": "retrieval_augmentation_layer",
+      "type": "depends",
+      "label": "后端接入检索增强"
+    },
+    {
+      "from": "ks_frontend",
+      "to": "ks_backend",
+      "type": "call",
+      "label": "调用后端服务"
+    },
+    {
+      "from": "ks_backend",
+      "to": "api_interface_doc",
+      "type": "depends",
+      "label": "遵循接口契约"
+    },
+    {
+      "from": "ks_frontend",
+      "to": "api_interface_doc",
+      "type": "depends",
+      "label": "前端单一数据源"
+    },
+    {
+      "from": "script_check_skill",
+      "to": "api_interface_doc",
+      "type": "depends",
+      "label": "校验 API 一致性"
+    },
+    {
+      "from": "script_check_skill",
+      "to": "ks_backend",
+      "type": "depends",
+      "label": "校验后端实现"
+    },
+    {
+      "from": "quality_gate",
+      "to": "ks_backend",
+      "type": "depends",
+      "label": "后端质量校验"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_0_现状基线_v1_x_已实现",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_1_总体架构_v2_0",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_2_1_设计动机",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_2_2_模块拆分_后端",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_2_3_新增接口_api_server_js_docs_api_interface_doc_md",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_2_4_gitignore_反转_关键",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_2_5_前端集成_v2_0_新增页面",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_3_dream_cycle_复用_git_能力_失败不中断",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_3_1_改造_scripts_dream_cycle_cron_sh",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_3_dream_cycle_复用_git_能力_失败不中断",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_3_2_gbrain_cli_v2_0_新增",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_3_dream_cycle_复用_git_能力_失败不中断",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_4_1_设计动机",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_4_2_模块拆分",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_4_3_接口扩展",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_4_4_内网友商环境适配",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_4_5_本地_bge_模型自带方案_方案_a_含安装包分发",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_5_内网部署与模型切换_基础设施层",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_5_1_现状",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_5_内网部署与模型切换_基础设施层",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_5_2_v2_0_增强",
+      "to": "page_prd_知识管理系统_v2_0_技术方案_5_内网部署与模型切换_基础设施层",
+      "type": "context",
+      "label": "属于"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_6_回测分流_与_tcgf_协同",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_7_v2_0_实施里程碑_建议顺序",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "page_prd_知识管理系统_v2_0_技术方案_8_风险与约束",
+      "to": "page_prd_知识管理系统_v2_0_技术方案",
+      "type": "context",
+      "label": "属于文档"
+    },
+    {
+      "from": "node_dream_cycle_cron",
+      "to": "node_git_pull",
+      "type": "sequence",
+      "label": "定时触发"
+    },
+    {
+      "from": "node_git_pull",
+      "to": "node_failure_alert",
+      "type": "depends",
+      "label": "失败时告警"
+    },
+    {
+      "from": "node_embed",
+      "to": "node_cleanup",
+      "type": "sequence",
+      "label": "嵌入后清理"
+    }
+  ],
   "flows": [
     {
-      "id": "sc_prd_001",
-      "name": "知识管理系统 V2.0 端到端落地验证",
+      "id": "sc_git_config_init",
+      "name": "Git 仓库初始化与配置",
       "description": "",
       "steps": []
+    },
+    {
+      "id": "sc_git_status_commit",
+      "name": "Git 工作区提交",
+      "description": "通过 /api/git 接口集查看工作区状态、提交变更并查询提交历史",
+      "steps": [
+        "api_git_status",
+        "api_git_commit",
+        "api_git_log"
+      ]
+    },
+    {
+      "id": "sc_git_pull_push",
+      "name": "Git 远程同步",
+      "description": "执行 git pull --rebase 拉取远程更新，并在无冲突时推送本地提交，失败时返回结构化错误且不中断其他流程。",
+      "steps": [
+        "api_git_pull",
+        "api_git_conflicts",
+        "api_git_push"
+      ]
+    },
+    {
+      "id": "sc_git_conflict_resolve",
+      "name": "Git 冲突查看与解决",
+      "description": "pull 或合并产生冲突后，列出冲突文件、查看单文件 diff，并选择保留版本完成冲突解决",
+      "steps": [
+        "api_git_pull",
+        "api_git_conflicts",
+        "api_git_diff",
+        "api_git_commit"
+      ]
+    },
+    {
+      "id": "sc_v2_architecture",
+      "name": "V2.0 总体架构落地",
+      "description": "验证 V2.0 新增 Git 协同层、检索增强层与 Dream Cycle 复用 Git 能力的总体架构按技术方案部署。",
+      "steps": [
+        "git_collaboration_layer",
+        "retrieval_augmentation_layer",
+        "dream_cycle",
+        "dream_cycle_cron",
+        "gbrain_sync",
+        "gbrain_embed",
+        "ks_backend",
+        "ks_frontend",
+        "api_interface_doc",
+        "script_check_skill",
+        "search_cache",
+        "quality_gate"
+      ]
+    },
+    {
+      "id": "sc_gitignore_reverse",
+      "name": ".gitignore 反转与版本化范围",
+      "description": "",
+      "steps": []
+    },
+    {
+      "id": "sc_retrieval_hybrid_search",
+      "name": "混合检索与 RRF 排序",
+      "description": "",
+      "steps": [
+        "page_prd_知识管理系统_v2_0_技术方案",
+        "page_prd_知识管理系统_v2_0_技术方案_0_现状基线_v1_x_已实现",
+        "page_prd_知识管理系统_v2_0_技术方案_1_总体架构_v2_0",
+        "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+        "page_prd_知识管理系统_v2_0_技术方案_2_1_设计动机",
+        "page_prd_知识管理系统_v2_0_技术方案_2_2_模块拆分_后端",
+        "page_prd_知识管理系统_v2_0_技术方案_2_3_新增接口_api_server_js_docs_api_interface_doc_md",
+        "page_prd_知识管理系统_v2_0_技术方案_2_4_gitignore_反转_关键",
+        "page_prd_知识管理系统_v2_0_技术方案_2_5_前端集成_v2_0_新增页面",
+        "page_prd_知识管理系统_v2_0_技术方案_3_dream_cycle_复用_git_能力_失败不中断",
+        "page_prd_知识管理系统_v2_0_技术方案_3_1_改造_scripts_dream_cycle_cron_sh",
+        "page_prd_知识管理系统_v2_0_技术方案_3_2_gbrain_cli_v2_0_新增",
+        "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+        "page_prd_知识管理系统_v2_0_技术方案_4_1_设计动机",
+        "page_prd_知识管理系统_v2_0_技术方案_4_2_模块拆分",
+        "page_prd_知识管理系统_v2_0_技术方案_4_3_接口扩展",
+        "page_prd_知识管理系统_v2_0_技术方案_4_4_内网友商环境适配",
+        "page_prd_知识管理系统_v2_0_技术方案_4_5_本地_bge_模型自带方案_方案_a_含安装包分发",
+        "page_prd_知识管理系统_v2_0_技术方案_5_内网部署与模型切换_基础设施层",
+        "page_prd_知识管理系统_v2_0_技术方案_5_1_现状",
+        "page_prd_知识管理系统_v2_0_技术方案_5_2_v2_0_增强",
+        "page_prd_知识管理系统_v2_0_技术方案_6_回测分流_与_tcgf_协同",
+        "page_prd_知识管理系统_v2_0_技术方案_7_v2_0_实施里程碑_建议顺序",
+        "page_prd_知识管理系统_v2_0_技术方案_8_风险与约束"
+      ]
+    },
+    {
+      "id": "sc_local_embedding_service",
+      "name": "本地 BGE Embedding 服务",
+      "description": "",
+      "steps": [
+        "page_prd_知识管理系统_v2_0_技术方案",
+        "page_prd_知识管理系统_v2_0_技术方案_0_现状基线_v1_x_已实现",
+        "page_prd_知识管理系统_v2_0_技术方案_1_总体架构_v2_0",
+        "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+        "page_prd_知识管理系统_v2_0_技术方案_2_1_设计动机",
+        "page_prd_知识管理系统_v2_0_技术方案_2_2_模块拆分_后端",
+        "page_prd_知识管理系统_v2_0_技术方案_2_3_新增接口_api_server_js_docs_api_interface_doc_md",
+        "page_prd_知识管理系统_v2_0_技术方案_2_4_gitignore_反转_关键",
+        "page_prd_知识管理系统_v2_0_技术方案_2_5_前端集成_v2_0_新增页面",
+        "page_prd_知识管理系统_v2_0_技术方案_3_dream_cycle_复用_git_能力_失败不中断",
+        "page_prd_知识管理系统_v2_0_技术方案_3_1_改造_scripts_dream_cycle_cron_sh",
+        "page_prd_知识管理系统_v2_0_技术方案_3_2_gbrain_cli_v2_0_新增",
+        "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+        "page_prd_知识管理系统_v2_0_技术方案_4_1_设计动机",
+        "page_prd_知识管理系统_v2_0_技术方案_4_2_模块拆分",
+        "page_prd_知识管理系统_v2_0_技术方案_4_3_接口扩展",
+        "page_prd_知识管理系统_v2_0_技术方案_4_4_内网友商环境适配",
+        "page_prd_知识管理系统_v2_0_技术方案_4_5_本地_bge_模型自带方案_方案_a_含安装包分发",
+        "page_prd_知识管理系统_v2_0_技术方案_5_内网部署与模型切换_基础设施层",
+        "page_prd_知识管理系统_v2_0_技术方案_5_1_现状",
+        "page_prd_知识管理系统_v2_0_技术方案_5_2_v2_0_增强",
+        "page_prd_知识管理系统_v2_0_技术方案_6_回测分流_与_tcgf_协同",
+        "page_prd_知识管理系统_v2_0_技术方案_7_v2_0_实施里程碑_建议顺序",
+        "page_prd_知识管理系统_v2_0_技术方案_8_风险与约束"
+      ]
+    },
+    {
+      "id": "sc_dream_cycle_git_pull",
+      "name": "Dream Cycle 失败跳过式 Git Pull",
+      "description": "cron脚本执行git pull失败时仅告警并继续后续sync/embed/清理步骤，不因Git在线状态中断",
+      "steps": [
+        "node_dream_cycle_cron",
+        "node_git_pull",
+        "node_gbrain_sync",
+        "node_embed",
+        "node_cleanup"
+      ]
+    },
+    {
+      "id": "sc_retest_plan",
+      "name": "缺陷经验回测分流",
+      "description": "",
+      "steps": [
+        "page_prd_知识管理系统_v2_0_技术方案",
+        "page_prd_知识管理系统_v2_0_技术方案_0_现状基线_v1_x_已实现",
+        "page_prd_知识管理系统_v2_0_技术方案_1_总体架构_v2_0",
+        "page_prd_知识管理系统_v2_0_技术方案_2_git_协同层_v2_0_核心新增",
+        "page_prd_知识管理系统_v2_0_技术方案_2_1_设计动机",
+        "page_prd_知识管理系统_v2_0_技术方案_2_2_模块拆分_后端",
+        "page_prd_知识管理系统_v2_0_技术方案_2_3_新增接口_api_server_js_docs_api_interface_doc_md",
+        "page_prd_知识管理系统_v2_0_技术方案_2_4_gitignore_反转_关键",
+        "page_prd_知识管理系统_v2_0_技术方案_2_5_前端集成_v2_0_新增页面",
+        "page_prd_知识管理系统_v2_0_技术方案_3_dream_cycle_复用_git_能力_失败不中断",
+        "page_prd_知识管理系统_v2_0_技术方案_3_1_改造_scripts_dream_cycle_cron_sh",
+        "page_prd_知识管理系统_v2_0_技术方案_3_2_gbrain_cli_v2_0_新增",
+        "page_prd_知识管理系统_v2_0_技术方案_4_检索增强_rag_层",
+        "page_prd_知识管理系统_v2_0_技术方案_4_1_设计动机",
+        "page_prd_知识管理系统_v2_0_技术方案_4_2_模块拆分",
+        "page_prd_知识管理系统_v2_0_技术方案_4_3_接口扩展",
+        "page_prd_知识管理系统_v2_0_技术方案_4_4_内网友商环境适配",
+        "page_prd_知识管理系统_v2_0_技术方案_4_5_本地_bge_模型自带方案_方案_a_含安装包分发",
+        "page_prd_知识管理系统_v2_0_技术方案_5_内网部署与模型切换_基础设施层",
+        "page_prd_知识管理系统_v2_0_技术方案_5_1_现状",
+        "page_prd_知识管理系统_v2_0_技术方案_5_2_v2_0_增强",
+        "page_prd_知识管理系统_v2_0_技术方案_6_回测分流_与_tcgf_协同",
+        "page_prd_知识管理系统_v2_0_技术方案_7_v2_0_实施里程碑_建议顺序",
+        "page_prd_知识管理系统_v2_0_技术方案_8_风险与约束"
+      ]
     }
   ]
 }
