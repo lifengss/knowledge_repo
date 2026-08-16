@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "title": "业务流程与依赖知识图谱",
+    "version": "1.0",
+    "generatedAt": "2026-08-14"
+  },
+  "domains": [],
+  "nodes": [],
+  "edges": [],
+  "flows": [
+    {
+      "id": "sc_prd_001",
+      "name": "知识管理系统 V2.0 端到端落地验证",
+      "description": "",
+      "steps": []
+    }
+  ]
+}
